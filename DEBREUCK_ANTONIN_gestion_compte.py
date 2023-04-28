@@ -519,10 +519,7 @@ class Interface(Tk):
             frame : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
         Output : /
         """
-        global users
         users = loadJson() # Must update the variable in the code if account where created ou deleted
-        print(users)
-        users_copy = users
 
         username = self.entryUsr_Con.get()
         password = self.entryPsw_Con.get()
@@ -534,20 +531,15 @@ class Interface(Tk):
                             self.label_IC.configure(text = label_info_msg["pswSuccessfullyUpdated"] + f"\nBonjour {username} !", fg = label_CorrectAswer_color)
                             self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
                             
-                            print(users)
-                            print(users.items())
-                            print(list(enumerate(users.items())))
-                            print(list(enumerate(loadJson().items())))
-                            del users_copy
-                            users_copy = users.copy()
-                            enum = enumerate(users_copy.items())
+                            #print(users)
+                            #print(users.items())
+                            #(list(enumerate(users.items())))
                             self.text_DA.configure(state=NORMAL)
                             self.text_DA.delete('1.0', END)
-                            for index, (key, values) in enum:
+                            for index, (key, values) in enumerate(users.items()):
                                 self.text_DA.insert(f'{index+1}.0', f'{key}\t')
                                 self.text_DA.insert(f'{index+1}.100', f'{values}\n')
                                 print(f"index : {index+1}, key : {key}, values : {values}")
-                            self.text_DA.insert('100.0','YO!')
                             self.text_DA.configure(state=DISABLED)
 
                             self.screenChange(self.frame_DA)
