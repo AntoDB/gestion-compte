@@ -192,7 +192,7 @@ def pswCorrect(logins: dict, username: str, password: str):
         
 def updateUser(logins: dict, username: str, password: str):
     """
-    Description : Renvoie un booléen en fonction du mot de passe est bon pour l'utilsateur
+    Description : Renvoie le dictionnaire des comptes mis à jour
     
     Input :
         logins : dict -> Dictionnaire contenant les utilisateurs et leurs mots de passe
@@ -204,6 +204,22 @@ def updateUser(logins: dict, username: str, password: str):
     logins[username] = password
     createJson(logins)
     logs("[INFO] Utilisateur bien mis à jour !")
+    return logins
+
+def removeUser(logins: dict, username: str):
+    """
+    Description : Renvoie le dictionnaire des comptes mis à jour
+    
+    Input :
+        logins : dict -> Dictionnaire contenant les utilisateurs et leurs mots de passe
+        username : str -> Le nom d'utilisateur
+    Output :
+        logins : dict -> Dictionnaire contenant les utilisateurs et leurs mots de passe mis à jour
+    """
+    if username in logins.keys() : # Sécurité
+        logins.pop(username, None)
+        createJson(logins)
+        logs("[INFO] Utilisateur supprimé !")
     return logins
 
 # ===== Input & Psw treatment ===== #
@@ -523,6 +539,8 @@ class Interface(Tk):
                         elif frame == "delPsw" :
                             self.label_IC.configure(text = label_info_msg["accountSuccessfullyDelete"], fg = label_CorrectAswer_color)
                             self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
+                            removeUser(users, username)
+
                             self.screenChange(self.frame_IC)
                         else :
                             self.label_IC.configure(text = label_info_msg["loginSuccessfully"] + f"\nBonjour {username} !", fg = label_CorrectAswer_color)
