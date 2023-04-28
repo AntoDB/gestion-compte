@@ -519,6 +519,10 @@ class Interface(Tk):
             frame : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
         Output : /
         """
+        global users
+        users = loadJson() # Must update the variable in the code if account where created ou deleted
+        print(users)
+
         username = self.entryUsr_Con.get()
         password = self.entryPsw_Con.get()
         if username != "" and password != "":
@@ -528,8 +532,12 @@ class Interface(Tk):
                         if frame == "displayUsers" :
                             self.label_IC.configure(text = label_info_msg["pswSuccessfullyUpdated"] + f"\nBonjour {username} !", fg = label_CorrectAswer_color)
                             self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
-
-                            for index, (key, values) in enumerate(users.items()):
+                            
+                            print(users)
+                            print(users.items())
+                            print(list(enumerate(users.items())))
+                            enum = enumerate(users.items())
+                            for index, (key, values) in enum:
                                 self.text_DA.insert(f'{index+1}.0', f'{key}\t')
                                 self.text_DA.insert(f'{index+1}.100', f'{values}\n')
                                 #print(f"index : {index+1}, key : {key}, values : {values}")
