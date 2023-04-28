@@ -201,10 +201,9 @@ def updateUser(logins: dict, username: str, password: str):
     Output :
         logins : dict -> Dictionnaire contenant les utilisateurs et leurs mots de passe mis à jour
     """
-    if username in logins.keys() : # Sécurité
-        logins[username] = password
-        createJson(logins)
-        logs("[INFO] Utilisateur bien mis à jour !")
+    logins[username] = password
+    createJson(logins)
+    logs("[INFO] Utilisateur bien mis à jour !")
     return logins
 
 # ===== Input & Psw treatment ===== #
