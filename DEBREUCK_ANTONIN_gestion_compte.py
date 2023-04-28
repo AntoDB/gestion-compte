@@ -522,6 +522,7 @@ class Interface(Tk):
         global users
         users = loadJson() # Must update the variable in the code if account where created ou deleted
         print(users)
+        users_copy = users
 
         username = self.entryUsr_Con.get()
         password = self.entryPsw_Con.get()
@@ -536,11 +537,17 @@ class Interface(Tk):
                             print(users)
                             print(users.items())
                             print(list(enumerate(users.items())))
-                            enum = enumerate(users.items())
+                            print(list(enumerate(loadJson().items())))
+                            del users_copy
+                            users_copy = users.copy()
+                            enum = enumerate(users_copy.items())
+                            self.text_DA.configure(state=NORMAL)
+                            self.text_DA.delete('1.0', END)
                             for index, (key, values) in enum:
                                 self.text_DA.insert(f'{index+1}.0', f'{key}\t')
                                 self.text_DA.insert(f'{index+1}.100', f'{values}\n')
-                                #print(f"index : {index+1}, key : {key}, values : {values}")
+                                print(f"index : {index+1}, key : {key}, values : {values}")
+                            self.text_DA.insert('100.0','YO!')
                             self.text_DA.configure(state=DISABLED)
 
                             self.screenChange(self.frame_DA)
