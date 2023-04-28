@@ -7,6 +7,9 @@ Created on Thuesday April 27 2023 at 15:51
 
 Authors : 
 Antonin De Breuck (BC info)
+Website : https://antodb.be
+
+Repository : https://github.com/AntoDB/gestion-compte
 """
 
 #=========================================================================================================#
