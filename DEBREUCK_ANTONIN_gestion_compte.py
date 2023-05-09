@@ -361,22 +361,25 @@ class Interface(Tk):
     
         Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Créer votre compte", font =("Helvetica", 25)).grid(row = 1, column = 1)
 
-        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 25)).place(x=frame_width/2-220, y=frame_width/ratio/5*1.2)
-        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Mot de passe", font =("Helvetica", 25)).place(x=frame_width/2-300, y=frame_width/ratio/5*2)
+        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 25)).place(x=frame_width/2-220, y=frame_width/ratio/6*1.2)
+        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Mot de passe", font =("Helvetica", 25)).place(x=frame_width/2-300, y=frame_width/ratio/6*2)
+        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Confirmation du nouveau\nmot de passe", font =("Helvetica", 18)).place(x=frame_width/2-380, y=frame_width/ratio/6*2.8)
 
         self.entryUsr_Create = Entry(self.frame_Create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
         self.entryPsw_Create = Entry(self.frame_Create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entryConfPsw_Create = Entry(self.frame_Create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
 
         self.buttonCreate1 = Button(self.frame_Create, bg=bg_button_color, fg=label_button_color, text="Créer le compte", width = 15, height = 2, font =("Helvetica", 15), command=self.createAccount)
         self.buttonCreate2 = Button(self.frame_Create, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_MH))
 
-        self.canvas_Create.grid(row = 1, column = 1, rowspan = 5)
+        self.canvas_Create.grid(row = 1, column = 1, rowspan = 6)
 
         self.entryUsr_Create.grid(row = 2, column = 1)
         self.entryPsw_Create.grid(row = 3, column = 1)
+        self.entryConfPsw_Create.grid(row = 4, column = 1)
 
-        self.buttonCreate1.grid(row = 4, column = 1)
-        self.buttonCreate2.grid(row = 5, column = 1)
+        self.buttonCreate1.grid(row = 5, column = 1)
+        self.buttonCreate2.grid(row = 6, column = 1)
 
         logs("[INFO] Menu de création de compte fait")
 
@@ -518,7 +521,7 @@ class Interface(Tk):
             self
             frame : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
         Output : /
-        """
+        """ 
         users = loadJson() # Must update the variable in the code if account where created ou deleted
 
         username = self.entryUsr_Con.get()
@@ -537,7 +540,7 @@ class Interface(Tk):
                             self.text_DA.configure(state=NORMAL)
                             self.text_DA.delete('1.0', END)
                             for index, (key, values) in enumerate(users.items()):
-                                self.text_DA.insert(f'{index+1}.0', f'{key}\t')
+                                self.text_DA.insert(f'{index+1}.0', f'{key}\t\t')
                                 self.text_DA.insert(f'{index+1}.100', f'{values}\n')
                                 print(f"index : {index+1}, key : {key}, values : {values}")
                             self.text_DA.configure(state=DISABLED)
@@ -593,29 +596,38 @@ class Interface(Tk):
         """
         username = self.entryUsr_Create.get()
         password = self.entryPsw_Create.get()
-        if username != "" and password != "":
-            if checkNoInjection(username) and checkNoInjection(password):
+        confPsw = self.entryConfPsw_Create.get()
+        if username != "" and password != "" and confPsw != "" :
+            if checkNoInjection(username) and checkNoInjection(password) and checkNoInjection(confPsw):
                 if username != password:
                     if userExist(users, username): # L'user est déjà existant
                         self.label_IC.configure(text = label_info_msg["userAllreadyExist"], fg = label_WrongAswer_color)
                         self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
                         self.screenChange(self.frame_IC)
                     else: # L'user n'existe pas
-                        if checkNoEasyPsw(password): # Le mot de passe n'est pas trop simple
-                            if checkNoPoorPsw(password): # Le mot de passe est assez robuste
-                                updateUser(users, username, password)
+                        if password == confPsw:
+                            if checkNoEasyPsw(password): # Le mot de passe n'est pas trop simple (1234, salut, ...)
+                                if checkNoPoorPsw(password): # Le mot de passe est assez robuste
+                                    updateUser(users, username, password)
 
-                                self.label_IC.configure(text = label_info_msg["successfullyNewAccount"], fg = label_CorrectAswer_color)
-                                self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
-                                self.screenChange(self.frame_IC)
+                                    self.label_IC.configure(text = label_info_msg["successfullyNewAccount"], fg = label_CorrectAswer_color)
+                                    self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
+                                    self.screenChange(self.frame_IC)
 
+                                    self.entryUsr_Create.delete(0, 'end')
+                                    self.entryPsw_Create.delete(0, 'end')
+                                    self.entryConfPsw_Create.delete(0, 'end')
 
-                            else: # Password too poor
-                                self.label_IC.configure(text = label_info_msg["tooPoorPsw"], fg = label_WrongAswer_color)
+                                else: # Password too poor
+                                    self.label_IC.configure(text = label_info_msg["tooPoorPsw"], fg = label_WrongAswer_color)
+                                    self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
+                                    self.screenChange(self.frame_IC)
+                            else: # Password too easy
+                                self.label_IC.configure(text = label_info_msg["tooEasyPsw"], fg = label_WrongAswer_color)
                                 self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
                                 self.screenChange(self.frame_IC)
-                        else: # Password too easy
-                            self.label_IC.configure(text = label_info_msg["tooEasyPsw"], fg = label_WrongAswer_color)
+                        else: # New psw and confirmation of new psw not the same
+                            self.label_IC.configure(text = label_info_msg["notSameNewPsw"], fg = label_WrongAswer_color)
                             self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
                             self.screenChange(self.frame_IC)
                 else: # Username et password identique
@@ -660,6 +672,9 @@ class Interface(Tk):
                                                 self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
                                                 self.screenChange(self.frame_IC)
 
+                                                self.entryUsr_PSWMod.delete(0, 'end')
+                                                self.entryPsw_PSWMod.delete(0, 'end')
+                                                self.entryConfNewPsw_PSWMod.delete(0, 'end')
 
                                             else: # Password too poor
                                                 self.label_IC.configure(text = label_info_msg["tooPoorPsw"], fg = label_WrongAswer_color)
