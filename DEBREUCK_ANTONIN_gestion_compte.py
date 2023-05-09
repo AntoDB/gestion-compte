@@ -527,7 +527,7 @@ class Interface(Tk):
             if check_no_injection(username) and check_no_injection(password):
                 if user_exist(users, username):
                     if psw_correct(users, username, password):
-                        if frame == "display_users" :
+                        if operation == "display_users" :
                             self.label_ic.configure(text = label_info_msg["psw_successfully_updated"] + f"\nBonjour {username} !", fg = label_correct_answer_color)
                             self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
                             
@@ -542,7 +542,7 @@ class Interface(Tk):
                             self.text_da.configure(state=DISABLED)
 
                             self.screen_change(self.frame_da)
-                        elif frame == "delPsw" :
+                        elif operation == "delPsw" :
                             self.label_ic.configure(text = label_info_msg["account_successfully_delete"], fg = label_correct_answer_color)
                             self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
                             remove_user(users, username)
