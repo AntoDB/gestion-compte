@@ -24,6 +24,7 @@ import os
 import platform
 import json
 import re # For Regex
+from colorama import Fore # For Colors in terminal
 
 #=========================================================================================================#
 
@@ -130,7 +131,13 @@ def logs(info):
     with open(cwd + logs_folder + logs_file + "_" + date + ".txt", 'a') as f:
         f.write('[' + str(datenow) + '] ' + info + '\n')
 
-    print('[' + str(datenow) + '] ' + info)
+    if "ERROR" in info:
+        color = Fore.RED
+    elif "WARN" in info:
+        color = Fore.YELLOW
+    else:
+        color = Fore.RESET
+    print(color + '[' + str(datenow) + '] ' + info)
 
 # ===== JSON ===== #
 def load_json():
@@ -139,11 +146,16 @@ def load_json():
     
     Input : /
     Output :
-        users : dict -> Dictionnaire du fichier JSON
+        users_in_file : dict -> Dictionnaire du fichier JSON
     """
-    with open(cwd + files_folder + data_file + ".json") as jf: # jf = Json file
-        users = json.load(jf)
-        return users
+    try:
+        with open(cwd + files_folder + data_file + ".json") as jf: # jf = Json file
+            users_in_file = json.load(jf)
+        return users_in_file
+    except:
+        logs("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier.")
+        users = {}
+        create_json(users)
 
 def create_json(users : dict):
     """
@@ -153,9 +165,12 @@ def create_json(users : dict):
         users : dict -> Dictionnaire à mettre dans le fichier JSON
     Output : /
     """
-    with open(cwd + files_folder + data_file + ".json", "w") as fp:
-        json.dump(users, fp)
-    logs("[INFO] Crée ou écrit un fichier JSON avec les utilisateurs")
+    try:
+        with open(cwd + files_folder + data_file + ".json", "w") as fp:
+            json.dump(users, fp)
+        logs("[INFO] Crée ou écrit un fichier JSON avec les utilisateurs")
+    except:
+        logs("[ERROR] Impossible de créer le fichier")
 
 # ===== Users treatment ===== #
 def user_exist(logins: dict, username: str):
@@ -168,10 +183,17 @@ def user_exist(logins: dict, username: str):
     Output :
         bool -> True si l'utilisateur existe dans la base de données, False dans le cas contraire
     """
-    if username in logins.keys() :
-        return True
-    else :
-        return False
+    try:
+        if username in logins.keys() :
+            return True
+        else :
+            return False
+    except AttributeError:
+        logs("[ERROR] Fichier vide or censé être créé avec utilisateurs !")
+        global users
+        create_json(users)
+    except Exception as Err:
+        logs("[ERROR] Impossible de récupérer les données des utilisateurs\nL'erreur :\n" + str(Err))
     
 def psw_correct(logins: dict, username: str, password: str):
     """
