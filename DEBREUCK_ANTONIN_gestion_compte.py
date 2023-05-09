@@ -45,38 +45,38 @@ bg_button_color = 'gray11'
 label_color = '#FFF'
 label_button_color = '#FFF'
 
-label_CorrectAswer_color = '#33FF33'
-label_WrongAswer_color = '#F00'
+label_correct_answer_color = '#33FF33'
+label_wrong_answer_color = '#F00'
 
 label_error_color = '#CC0000'
 
 # =============== Labels Displays =============== #
 
 label_info_msg = {
-    "loginSuccessfully" : "Vous êtes bien connecté !",
-    "successfullyNewAccount" : "Compte créé !",
-    "pswSuccessfullyUpdated" : "Votre mot de pase est bien mis à jour !",
-    "accountSuccessfullyDelete" : "Votre compte est bien supprimé !",
-    "connnectionRefused" : "Connexion refusée !",
+    "login_successfully" : "Vous êtes bien connecté !",
+    "successfully_new_account" : "Compte créé !",
+    "psw_successfully_updated" : "Votre mot de pase est bien mis à jour !",
+    "account_successfully_delete" : "Votre compte est bien supprimé !",
+    "connnection_refused" : "Connexion refusée !",
 
-    "noUsers" : "Il y a aucun utilisateur dans notre base de données actuellement.",
-    "noUser" : "Cet utilisateur n'existe pas !",
-    "userAllreadyExist" : "Cet utilisateur existe déjà !",
-    "wrongPassword" : "Le mot de passe entré, n'est pas bon !",
-    "emptyData" : "Merci de remplir tous les champs !\nIl manque votre pseudo et/ou votre mot de passe.",
-    "sameUserPsw" : "Pour des raison de sécurité, nous n'autorisons pas un mot de passe identique à l'utilisateur.",
-    "tooEasyPsw" : "Mot de passe trop connu et pas assez robuste.",
-    "tooPoorPsw" : "Mot de passe pas assez robuste !\nIl doit contenir au moins 8 caractères dont 1 spécial, une minuscule et une majuscule.",
-    "toManyTry" : "Vous avez essayer trop de fois des mots de passe incorrects !\nNous soupçonnons une tentative d'attaque brute force.",
-    "illegalCharacter" : "Caractère non autorisée !\nNous soupçonnons une tentative d'injection de code.",
+    "no_users" : "Il y a aucun utilisateur dans notre base de données actuellement.",
+    "no_user" : "Cet utilisateur n'existe pas !",
+    "user_allready_exist" : "Cet utilisateur existe déjà !",
+    "wrong_password" : "Le mot de passe entré, n'est pas bon !",
+    "empty_data" : "Merci de remplir tous les champs !\nIl manque votre pseudo et/ou votre mot de passe.",
+    "same_user_psw" : "Pour des raison de sécurité, nous n'autorisons pas un mot de passe identique à l'utilisateur.",
+    "too_easy_psw" : "Mot de passe trop connu et pas assez robuste.",
+    "too_poor_psw" : "Mot de passe pas assez robuste !\nIl doit contenir au moins 8 caractères dont 1 spécial, une minuscule et une majuscule.",
+    "to_many_try" : "Vous avez essayer trop de fois des mots de passe incorrects !\nNous soupçonnons une tentative d'attaque brute force.",
+    "illegal_character" : "Caractère non autorisée !\nNous soupçonnons une tentative d'injection de code.",
 
-    "notSameNewPsw" : "Le nouveau mot de passe et la confirmation ne correspondent pas !"
+    "not_same_new_psw" : "Le nouveau mot de passe et la confirmation ne correspondent pas !"
 }
 
 # =============== Password =============== #
 
-maxTryPsw = 3
-regexPswPattern = r'[^\w\s]'
+max_try_psw = 3
+regex_psw_pattern = r'[^\w\s]'
 
 # =============== Files =============== #
 
@@ -94,7 +94,7 @@ data_file = "users"
 
 date = ""
 users = {}
-currentTryPsw = 0
+current_try_psw = 0
 
 #=========================================================================================================#
 
@@ -133,7 +133,7 @@ def logs(info):
     print('[' + str(datenow) + '] ' + info)
 
 # ===== JSON ===== #
-def loadJson():
+def load_json():
     """
     Description : Lit le fichier JSON pour récupérer tous les comptes des utilisateurs.
     
@@ -145,7 +145,7 @@ def loadJson():
         users = json.load(jf)
         return users
 
-def createJson(users : dict):
+def create_json(users : dict):
     """
     Description : Écrit dans le fichier JSON les comptes des utilisateurs.
     
@@ -158,7 +158,7 @@ def createJson(users : dict):
     logs("[INFO] Crée ou écrit un fichier JSON avec les utilisateurs")
 
 # ===== Users treatment ===== #
-def userExist(logins: dict, username: str):
+def user_exist(logins: dict, username: str):
     """
     Description : Renvoie un booléen en fonction de si l'utilsateur existe
     
@@ -173,7 +173,7 @@ def userExist(logins: dict, username: str):
     else :
         return False
     
-def pswCorrect(logins: dict, username: str, password: str):
+def psw_correct(logins: dict, username: str, password: str):
     """
     Description : Renvoie un booléen en fonction du mot de passe est bon pour l'utilsateur
     
@@ -190,7 +190,7 @@ def pswCorrect(logins: dict, username: str, password: str):
         else:
             return False
         
-def updateUser(logins: dict, username: str, password: str):
+def update_user(logins: dict, username: str, password: str):
     """
     Description : Renvoie le dictionnaire des comptes mis à jour
     
@@ -202,11 +202,11 @@ def updateUser(logins: dict, username: str, password: str):
         logins : dict -> Dictionnaire contenant les utilisateurs et leurs mots de passe mis à jour
     """
     logins[username] = password
-    createJson(logins)
+    create_json(logins)
     logs("[INFO] Utilisateur bien mis à jour !")
     return logins
 
-def removeUser(logins: dict, username: str):
+def remove_user(logins: dict, username: str):
     """
     Description : Renvoie le dictionnaire des comptes mis à jour
     
@@ -218,12 +218,12 @@ def removeUser(logins: dict, username: str):
     """
     if username in logins.keys() : # Sécurité
         logins.pop(username, None)
-        createJson(logins)
+        create_json(logins)
         logs("[INFO] Utilisateur supprimé !")
     return logins
 
 # ===== Input & Psw treatment ===== #
-def checkNoInjection(input: str):
+def check_no_injection(input: str):
     """
     Description : Renvoie un booléen en fonction de si le texte ne contient pas des caractères suspects
     
@@ -237,7 +237,7 @@ def checkNoInjection(input: str):
         return False
     return True
 
-def checkNoEasyPsw(input: str):
+def check_no_easy_psw(input: str):
     """
     Description : Renvoie un booléen en fonction de si le texte n'est pas trop simple
     
@@ -250,7 +250,7 @@ def checkNoEasyPsw(input: str):
         return False
     return True
 
-def checkNoPoorPsw(input: str):
+def check_no_poor_psw(input: str):
     """
     Description : Renvoie un booléen en fonction de si le texte n'est pas trop pauvre en robustesse
     
@@ -259,7 +259,7 @@ def checkNoPoorPsw(input: str):
     Output :
         bool -> True si le mot de passe n'est pas trop simple, False dans le cas contraire
     """
-    if len(input) >= 8 and input != input.lower() and input != input.upper() and bool(re.search(regexPswPattern, input)) : # Dernier : Renvoie true si le regex est juste (s'il y a un caractère spécial de trouvé dans le str)
+    if len(input) >= 8 and input != input.lower() and input != input.upper() and bool(re.search(regex_psw_pattern, input)) : # Dernier : Renvoie true si le regex est juste (s'il y a un caractère spécial de trouvé dans le str)
         return True
     return False
 
@@ -283,38 +283,38 @@ class Interface(Tk):
         Output : /
         """
         # MH = Menu Home
-        self.frame_MH = Frame(self)
-        self.canvas_mBG = Canvas(self.frame_MH, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
+        self.frame_mh = Frame(self)
+        self.canvas_mh = Canvas(self.frame_mh, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
     
-        self.label_MH_Title = Label(self.frame_MH, bg=bg_frame_color, fg=label_color, text="Gestionnaire de comptes", font =("Helvetica", 25))
+        self.label_mh_title = Label(self.frame_mh, bg=bg_frame_color, fg=label_color, text="Gestionnaire de comptes", font =("Helvetica", 25))
 
-        self.buttonMH1 = Button(self.frame_MH, bg=bg_button_color, fg=label_button_color, text="Se connecter", width = 25, height = 3, font =("Helvetica", 15), command=lambda: self.modifyScreenAfterLogin("login"))
-        self.buttonMH2 = Button(self.frame_MH, bg=bg_button_color, fg=label_button_color, text="Créer un compte", width = 25, height = 3, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_Create))  
-        self.buttonMH3 = Button(self.frame_MH, bg=bg_button_color, fg=label_button_color, text="Changer votre mot de passe", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_PSWMod))
-        self.buttonMH4 = Button(self.frame_MH, bg=bg_button_color, fg=label_button_color, text="Supprimer votre compte", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.modifyScreenAfterLogin("delPsw"))
-        self.buttonMH5 = Button(self.frame_MH, bg=bg_button_color, fg=label_button_color, text="Afficher les utilisateurs", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.modifyScreenAfterLogin("displayUsers"))
+        self.button_mh1 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Se connecter", width = 25, height = 3, font =("Helvetica", 15), command=lambda: self.modify_screen_after_login("login"))
+        self.button_mh2 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Créer un compte", width = 25, height = 3, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_create))  
+        self.button_mh3 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Changer votre mot de passe", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_pswmod))
+        self.button_mh4 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Supprimer votre compte", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.modify_screen_after_login("delPsw"))
+        self.button_mh5 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Afficher les utilisateurs", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.modify_screen_after_login("display_users"))
 
-        Label(self.frame_MH, bg=bg_frame_color, fg=label_color, text="Python V : " + str(platform.python_version())).place(x = 10 , y = frame_width/ratio-65)
-        Label(self.frame_MH, bg=bg_frame_color, fg=label_color, text="App V : " + version).place(x = 10 , y = frame_width/ratio-45)
-        Button(self.frame_MH, bg=bg_button_color, fg=label_button_color, text="Quitter", width = 20, height = 2, font =("Helvetica", 15), command=self.destroy).grid(row = 5, column = 3)
+        Label(self.frame_mh, bg=bg_frame_color, fg=label_color, text="Python V : " + str(platform.python_version())).place(x = 10 , y = frame_width/ratio-65)
+        Label(self.frame_mh, bg=bg_frame_color, fg=label_color, text="App V : " + version).place(x = 10 , y = frame_width/ratio-45)
+        Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Quitter", width = 20, height = 2, font =("Helvetica", 15), command=self.destroy).grid(row = 5, column = 3)
 
-        self.canvas_mBG.grid(row = 1, column = 1, rowspan = 5, columnspan = 5)
-                                
-        self.label_MH_Title.grid(row = 1, column = 1, columnspan = 5)
+        self.canvas_mh.grid(row = 1, column = 1, rowspan = 5, columnspan = 5)
 
-        self.buttonMH1.grid(row = 2, column = 2)
-        self.buttonMH2.grid(row = 2, column = 4)
-        self.buttonMH3.grid(row = 4, column = 2)
-        self.buttonMH4.grid(row = 4, column = 3)
-        self.buttonMH5.grid(row = 4, column = 4)
+        self.label_mh_title.grid(row = 1, column = 1, columnspan = 5)
+
+        self.button_mh1.grid(row = 2, column = 2)
+        self.button_mh2.grid(row = 2, column = 4)
+        self.button_mh3.grid(row = 4, column = 2)
+        self.button_mh4.grid(row = 4, column = 3)
+        self.button_mh5.grid(row = 4, column = 4)
 
         logs("[INFO] Menu de démarrage fait")
 
         # Affichage premier écran & Prend quel écran c'est & Met le titre
             
-        self.mesAutresFrames = {}
-        self.mesAutresFrames["whichMenu"] = self.frame_MH
-        self.mesAutresFrames["whichMenu"].grid()
+        self.mes_autres_frames = {}
+        self.mes_autres_frames["whichMenu"] = self.frame_mh
+        self.mes_autres_frames["whichMenu"].grid()
 
         # =============== Création des autres fenêtres =============== #
 
@@ -325,27 +325,27 @@ class Interface(Tk):
         Output : /
         """
         # Con = Connexion
-        self.frame_Con = Frame(self)
-        self.canvas_Con = Canvas(self.frame_Con, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
+        self.frame_con = Frame(self)
+        self.canvas_con = Canvas(self.frame_con, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
     
-        Label(self.frame_Con, bg=bg_frame_color, fg=label_color, text="Se connecter", font =("Helvetica", 25)).grid(row = 1, column = 1)
+        Label(self.frame_con, bg=bg_frame_color, fg=label_color, text="Se connecter", font =("Helvetica", 25)).grid(row = 1, column = 1)
 
-        Label(self.frame_Con, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 25)).place(x=frame_width/2-220, y=frame_width/ratio/5*1.2)
-        Label(self.frame_Con, bg=bg_frame_color, fg=label_color, text="Mot de passe", font =("Helvetica", 25)).place(x=frame_width/2-300, y=frame_width/ratio/5*2)
+        Label(self.frame_con, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 25)).place(x=frame_width/2-220, y=frame_width/ratio/5*1.2)
+        Label(self.frame_con, bg=bg_frame_color, fg=label_color, text="Mot de passe", font =("Helvetica", 25)).place(x=frame_width/2-300, y=frame_width/ratio/5*2)
 
-        self.entryUsr_Con = Entry(self.frame_Con, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
-        self.entryPsw_Con = Entry(self.frame_Con, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_usr_con = Entry(self.frame_con, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_psw_con = Entry(self.frame_con, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
 
-        self.buttonCon1 = Button(self.frame_Con, bg=bg_button_color, fg=label_button_color, text="Se connecter", width = 20, height = 2, font =("Helvetica", 15), command=lambda: self.connection("login"))
-        self.buttonCon2 = Button(self.frame_Con, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_MH))
+        self.button_con1 = Button(self.frame_con, bg=bg_button_color, fg=label_button_color, text="Se connecter", width = 20, height = 2, font =("Helvetica", 15), command=lambda: self.connection("login"))
+        self.button_con2 = Button(self.frame_con, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_mh))
 
-        self.canvas_Con.grid(row = 1, column = 1, rowspan = 5)
+        self.canvas_con.grid(row = 1, column = 1, rowspan = 5)
 
-        self.entryUsr_Con.grid(row = 2, column = 1)
-        self.entryPsw_Con.grid(row = 3, column = 1)
+        self.entry_usr_con.grid(row = 2, column = 1)
+        self.entry_psw_con.grid(row = 3, column = 1)
 
-        self.buttonCon1.grid(row = 4, column = 1)
-        self.buttonCon2.grid(row = 5, column = 1)
+        self.button_con1.grid(row = 4, column = 1)
+        self.button_con2.grid(row = 5, column = 1)
 
         logs("[INFO] Menu de connexion fait")
 
@@ -356,30 +356,30 @@ class Interface(Tk):
         Output : /
         """
         # Create = Création (de compte)
-        self.frame_Create = Frame(self)
-        self.canvas_Create = Canvas(self.frame_Create, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
+        self.frame_create = Frame(self)
+        self.canvas_create = Canvas(self.frame_create, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
     
-        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Créer votre compte", font =("Helvetica", 25)).grid(row = 1, column = 1)
+        Label(self.frame_create, bg=bg_frame_color, fg=label_color, text="Créer votre compte", font =("Helvetica", 25)).grid(row = 1, column = 1)
 
-        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 25)).place(x=frame_width/2-220, y=frame_width/ratio/6*1.2)
-        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Mot de passe", font =("Helvetica", 25)).place(x=frame_width/2-300, y=frame_width/ratio/6*2)
-        Label(self.frame_Create, bg=bg_frame_color, fg=label_color, text="Confirmation du nouveau\nmot de passe", font =("Helvetica", 18)).place(x=frame_width/2-380, y=frame_width/ratio/6*2.8)
+        Label(self.frame_create, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 25)).place(x=frame_width/2-220, y=frame_width/ratio/6*1.2)
+        Label(self.frame_create, bg=bg_frame_color, fg=label_color, text="Mot de passe", font =("Helvetica", 25)).place(x=frame_width/2-300, y=frame_width/ratio/6*2)
+        Label(self.frame_create, bg=bg_frame_color, fg=label_color, text="Confirmation du nouveau\nmot de passe", font =("Helvetica", 18)).place(x=frame_width/2-380, y=frame_width/ratio/6*2.8)
 
-        self.entryUsr_Create = Entry(self.frame_Create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
-        self.entryPsw_Create = Entry(self.frame_Create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
-        self.entryConfPsw_Create = Entry(self.frame_Create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_usr_create = Entry(self.frame_create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_psw_Create = Entry(self.frame_create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_conf_psw_create = Entry(self.frame_create, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
 
-        self.buttonCreate1 = Button(self.frame_Create, bg=bg_button_color, fg=label_button_color, text="Créer le compte", width = 15, height = 2, font =("Helvetica", 15), command=self.createAccount)
-        self.buttonCreate2 = Button(self.frame_Create, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_MH))
+        self.button_create1 = Button(self.frame_create, bg=bg_button_color, fg=label_button_color, text="Créer le compte", width = 15, height = 2, font =("Helvetica", 15), command=self.create_account)
+        self.button_create2 = Button(self.frame_create, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_mh))
 
-        self.canvas_Create.grid(row = 1, column = 1, rowspan = 6)
+        self.canvas_create.grid(row = 1, column = 1, rowspan = 6)
 
-        self.entryUsr_Create.grid(row = 2, column = 1)
-        self.entryPsw_Create.grid(row = 3, column = 1)
-        self.entryConfPsw_Create.grid(row = 4, column = 1)
+        self.entry_usr_create.grid(row = 2, column = 1)
+        self.entry_psw_Create.grid(row = 3, column = 1)
+        self.entry_conf_psw_create.grid(row = 4, column = 1)
 
-        self.buttonCreate1.grid(row = 5, column = 1)
-        self.buttonCreate2.grid(row = 6, column = 1)
+        self.button_create1.grid(row = 5, column = 1)
+        self.button_create2.grid(row = 6, column = 1)
 
         logs("[INFO] Menu de création de compte fait")
 
@@ -390,14 +390,14 @@ class Interface(Tk):
         Output : /
         """
         # IC = Info Connexion
-        self.frame_IC = Frame(self)
-        Canvas(self.frame_IC, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0).grid(row = 1, column = 1, rowspan = 2)
+        self.frame_ic = Frame(self)
+        Canvas(self.frame_ic, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0).grid(row = 1, column = 1, rowspan = 2)
     
-        self.label_IC = Label(self.frame_IC, bg=bg_frame_color, fg=label_color, text="Si vous lisez ceci, c'est une erreur.\nPrévenez le créateur en expliquant votre manipulation.", font =("Helvetica", 18), height=2)
-        self.button_IC = Button(self.frame_IC, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 20, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_MH))
+        self.label_ic = Label(self.frame_ic, bg=bg_frame_color, fg=label_color, text="Si vous lisez ceci, c'est une erreur.\nPrévenez le créateur en expliquant votre manipulation.", font =("Helvetica", 18), height=2)
+        self.button_ic = Button(self.frame_ic, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 20, height = 2, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_mh))
 
-        self.label_IC.grid(row = 1, column = 1)
-        self.button_IC.grid(row = 2, column = 1)
+        self.label_ic.grid(row = 1, column = 1)
+        self.button_ic.grid(row = 2, column = 1)
 
         logs("[INFO] Écran d'affichage message de connexion/modification/suppression.")
 
@@ -408,35 +408,35 @@ class Interface(Tk):
         Output : /
         """
         # PSWMod = Password Modification = Modification de mot de passe
-        self.frame_PSWMod = Frame(self)
-        self.canvas_PSWMod = Canvas(self.frame_PSWMod, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
+        self.frame_pswmod = Frame(self)
+        self.canvas_pswmod = Canvas(self.frame_pswmod, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
     
-        Label(self.frame_PSWMod, bg=bg_frame_color, fg=label_color, text="Modifiez votre mot de passe", font =("Helvetica", 25)).grid(row = 1, column = 1)
+        Label(self.frame_pswmod, bg=bg_frame_color, fg=label_color, text="Modifiez votre mot de passe", font =("Helvetica", 25)).grid(row = 1, column = 1)
 
-        Label(self.frame_PSWMod, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 18)).place(x=frame_width/2-220, y=frame_width/ratio/8*1.2)
-        Label(self.frame_PSWMod, bg=bg_frame_color, fg=label_color, text="Mot de passe\nactuel", font =("Helvetica", 18)).place(x=frame_width/2-280, y=frame_width/ratio/8*2)
+        Label(self.frame_pswmod, bg=bg_frame_color, fg=label_color, text="Pseudo", font =("Helvetica", 18)).place(x=frame_width/2-220, y=frame_width/ratio/8*1.2)
+        Label(self.frame_pswmod, bg=bg_frame_color, fg=label_color, text="Mot de passe\nactuel", font =("Helvetica", 18)).place(x=frame_width/2-280, y=frame_width/ratio/8*2)
 
-        self.entryUsr_PSWMod = Entry(self.frame_PSWMod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
-        self.entryPsw_PSWMod = Entry(self.frame_PSWMod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_usr_pswmod = Entry(self.frame_pswmod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_psw_pswmod = Entry(self.frame_pswmod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
 
-        Label(self.frame_PSWMod, bg=bg_frame_color, fg=label_color, text="Nouveau\nmot de passe", font =("Helvetica", 18)).place(x=frame_width/2-280, y=frame_width/ratio/8*3.2)
-        Label(self.frame_PSWMod, bg=bg_frame_color, fg=label_color, text="Confirmation du nouveau\nmot de passe", font =("Helvetica", 18)).place(x=frame_width/2-400, y=frame_width/ratio/8*4.2)
+        Label(self.frame_pswmod, bg=bg_frame_color, fg=label_color, text="Nouveau\nmot de passe", font =("Helvetica", 18)).place(x=frame_width/2-280, y=frame_width/ratio/8*3.2)
+        Label(self.frame_pswmod, bg=bg_frame_color, fg=label_color, text="Confirmation du nouveau\nmot de passe", font =("Helvetica", 18)).place(x=frame_width/2-400, y=frame_width/ratio/8*4.2)
 
-        self.entryNewPsw_PSWMod = Entry(self.frame_PSWMod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
-        self.entryConfNewPsw_PSWMod = Entry(self.frame_PSWMod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_new_psw_pswmod = Entry(self.frame_pswmod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
+        self.entry_conf_new_psw_PSWMod = Entry(self.frame_pswmod, bg=bg_button_color, fg=label_button_color, width = 15, font =("Helvetica", 15))
 
-        self.buttonPSWMod1 = Button(self.frame_PSWMod, bg=bg_button_color, fg=label_button_color, text="Modifier le mot de passe", width = 20, height = 2, font =("Helvetica", 15), command=self.modifyAccountPsw)
-        self.buttonPSWMod2 = Button(self.frame_PSWMod, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_MH))
+        self.button_pswmod1 = Button(self.frame_pswmod, bg=bg_button_color, fg=label_button_color, text="Modifier le mot de passe", width = 20, height = 2, font =("Helvetica", 15), command=self.modify_account_psw)
+        self.button_pswmod2 = Button(self.frame_pswmod, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_mh))
 
-        self.canvas_PSWMod.grid(row = 1, column = 1, rowspan = 8)
+        self.canvas_pswmod.grid(row = 1, column = 1, rowspan = 8)
 
-        self.entryUsr_PSWMod.grid(row = 2, column = 1)
-        self.entryPsw_PSWMod.grid(row = 3, column = 1)
-        self.entryNewPsw_PSWMod.grid(row = 5, column = 1)
-        self.entryConfNewPsw_PSWMod.grid(row = 6, column = 1)
+        self.entry_usr_pswmod.grid(row = 2, column = 1)
+        self.entry_psw_pswmod.grid(row = 3, column = 1)
+        self.entry_new_psw_pswmod.grid(row = 5, column = 1)
+        self.entry_conf_new_psw_PSWMod.grid(row = 6, column = 1)
 
-        self.buttonPSWMod1.grid(row = 7, column = 1)
-        self.buttonPSWMod2.grid(row = 8, column = 1)
+        self.button_pswmod1.grid(row = 7, column = 1)
+        self.button_pswmod2.grid(row = 8, column = 1)
 
         logs("[INFO] Menu de modification de mot de passe fait")
 
@@ -448,32 +448,32 @@ class Interface(Tk):
         Output : /
         """
         # DA = Display Account = Affiche compte
-        self.frame_DA = Frame(self, bg=bg_frame_color)
-        self.canvas_DA = Canvas(self.frame_DA, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
+        self.frame_da = Frame(self, bg=bg_frame_color)
+        self.canvas_da = Canvas(self.frame_da, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
     
-        Label(self.frame_DA, bg=bg_frame_color, fg=label_color, text="Comptes enregistrés", font = ("Helvetica", 25)).grid(row = 1, column = 1)
+        Label(self.frame_da, bg=bg_frame_color, fg=label_color, text="Comptes enregistrés", font = ("Helvetica", 25)).grid(row = 1, column = 1)
     
-        Label(self.frame_DA, bg=bg_frame_color, fg=label_color, text="Noms/Pseudos", font = ("Helvetica", 25)).grid(row = 2, column = 1, sticky=W)
+        Label(self.frame_da, bg=bg_frame_color, fg=label_color, text="Noms/Pseudos", font = ("Helvetica", 25)).grid(row = 2, column = 1, sticky=W)
         
-        self.text_DA = Text(self.frame_DA, font = ("Helvetica", 15), height=10)
-        self.text_DA.grid(row = 3, column = 1, sticky=EW)
+        self.text_da = Text(self.frame_da, font = ("Helvetica", 15), height=10)
+        self.text_da.grid(row = 3, column = 1, sticky=EW)
 
         # create a scrollbar widget and set its command to the text widget
-        scrollbar = Scrollbar(self.frame_DA, orient='vertical', command=self.text_DA.yview)
+        scrollbar = Scrollbar(self.frame_da, orient='vertical', command=self.text_da.yview)
         scrollbar.grid(row=3, column=2, sticky=NS)
 
         #  communicate back to the scrollbar
-        self.text_DA['yscrollcommand'] = scrollbar.set
+        self.text_da['yscrollcommand'] = scrollbar.set
         
-        Button(self.frame_DA, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_MH)).grid(row = 5, column = 1, columnspan= 2)
+        Button(self.frame_da, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_mh)).grid(row = 5, column = 1, columnspan= 2)
 
-        self.canvas_DA.grid(row = 1, column = 1, rowspan=5)
+        self.canvas_da.grid(row = 1, column = 1, rowspan=5)
 
         logs("[INFO] Écran d'affichage de comptes fait")
 
     # ===== Interface treatment ===== #
 
-    def screenChange(self, arg : object):
+    def screen_change(self, arg : object):
         """
         Description : Affiche le menu demandé.
         Actions : Enlève le précédent écran, affiche celui demandé, set une variable sur cette écran
@@ -484,12 +484,12 @@ class Interface(Tk):
         Output : /
         """
         #print(dir(arg)) # Possibilité d'opération sur l'object
-        logs("[INFO] Changement fenêtre : " + str(self.mesAutresFrames["whichMenu"]) + " > " + str(arg))
-        self.mesAutresFrames["whichMenu"].grid_remove()
-        self.mesAutresFrames["whichMenu"] = arg
-        self.mesAutresFrames["whichMenu"].grid()
+        logs("[INFO] Changement fenêtre : " + str(self.mes_autres_frames["whichMenu"]) + " > " + str(arg))
+        self.mes_autres_frames["whichMenu"].grid_remove()
+        self.mes_autres_frames["whichMenu"] = arg
+        self.mes_autres_frames["whichMenu"].grid()
     
-    def modifyScreenAfterLogin(self, operation : str):
+    def modify_screen_after_login(self, operation : str):
         """
         Description : Change le bouton de connexion Affiche le menu demandé.
         Actions : Enlève le précédent écran, affiche celui demandé, set une variable sur cette écran
@@ -500,15 +500,15 @@ class Interface(Tk):
             operation : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
         Output : /
         """
-        if operation == "displayUsers":
-            self.buttonCon1.configure(text= "Afficher les comptes", command= lambda: self.connection(operation))
+        if operation == "display_users":
+            self.button_con1.configure(text= "Afficher les comptes", command= lambda: self.connection(operation))
         elif operation == "delPsw":
-            self.buttonCon1.configure(text= "Suprimmer le compte", command= lambda: self.connection(operation))
+            self.button_con1.configure(text= "Suprimmer le compte", command= lambda: self.connection(operation))
         else:
-            self.buttonCon1.configure(text= "Se connecter", command= lambda: self.connection(operation))
-        self.entryUsr_Con.delete(0, 'end')
-        self.entryPsw_Con.delete(0, 'end')
-        self.screenChange(self.frame_Con)
+            self.button_con1.configure(text= "Se connecter", command= lambda: self.connection(operation))
+        self.entry_usr_con.delete(0, 'end')
+        self.entry_psw_con.delete(0, 'end')
+        self.screen_change(self.frame_con)
 
     def connection(self, frame : str):
         """
@@ -519,70 +519,70 @@ class Interface(Tk):
             frame : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
         Output : /
         """ 
-        users = loadJson() # Must update the variable in the code if account where created ou deleted
+        users = load_json() # Must update the variable in the code if account where created ou deleted
 
-        username = self.entryUsr_Con.get()
-        password = self.entryPsw_Con.get()
+        username = self.entry_usr_con.get()
+        password = self.entry_psw_con.get()
         if username != "" and password != "":
-            if checkNoInjection(username) and checkNoInjection(password):
-                if userExist(users, username):
-                    if pswCorrect(users, username, password):
-                        if frame == "displayUsers" :
-                            self.label_IC.configure(text = label_info_msg["pswSuccessfullyUpdated"] + f"\nBonjour {username} !", fg = label_CorrectAswer_color)
-                            self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
+            if check_no_injection(username) and check_no_injection(password):
+                if user_exist(users, username):
+                    if psw_correct(users, username, password):
+                        if frame == "display_users" :
+                            self.label_ic.configure(text = label_info_msg["psw_successfully_updated"] + f"\nBonjour {username} !", fg = label_correct_answer_color)
+                            self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
                             
-                            #print(users)
+                            #print(users)lo
                             #print(users.items())
                             #(list(enumerate(users.items())))
-                            self.text_DA.configure(state=NORMAL)
-                            self.text_DA.delete('1.0', END)
+                            self.text_da.configure(state=NORMAL)
+                            self.text_da.delete('1.0', END)
                             for index, (key, values) in enumerate(users.items()):
-                                self.text_DA.insert(f'{index+1}.0', f'{key}\n')
+                                self.text_da.insert(f'{index+1}.0', f'{key}\n')
                                 print(f"index : {index+1}, key : {key}")
-                            self.text_DA.configure(state=DISABLED)
+                            self.text_da.configure(state=DISABLED)
 
-                            self.screenChange(self.frame_DA)
+                            self.screen_change(self.frame_da)
                         elif frame == "delPsw" :
-                            self.label_IC.configure(text = label_info_msg["accountSuccessfullyDelete"], fg = label_CorrectAswer_color)
-                            self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
-                            removeUser(users, username)
+                            self.label_ic.configure(text = label_info_msg["account_successfully_delete"], fg = label_correct_answer_color)
+                            self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
+                            remove_user(users, username)
 
-                            self.screenChange(self.frame_IC)
+                            self.screen_change(self.frame_ic)
                         else :
-                            self.label_IC.configure(text = label_info_msg["loginSuccessfully"] + f"\nBonjour {username} !", fg = label_CorrectAswer_color)
-                            self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
-                            self.screenChange(self.frame_IC)
+                            self.label_ic.configure(text = label_info_msg["login_successfully"] + f"\nBonjour {username} !", fg = label_correct_answer_color)
+                            self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
+                            self.screen_change(self.frame_ic)
 
                     else: # Le mmot de passe est incorrect
-                        global currentTryPsw
-                        currentTryPsw += 1
-                        if currentTryPsw >= maxTryPsw:
-                            self.label_IC.configure(text = label_info_msg["toManyTry"], fg = label_WrongAswer_color)
-                            self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
-                            self.screenChange(self.frame_IC)
+                        global current_try_psw
+                        current_try_psw += 1
+                        if current_try_psw >= max_try_psw:
+                            self.label_ic.configure(text = label_info_msg["to_many_try"], fg = label_wrong_answer_color)
+                            self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
+                            self.screen_change(self.frame_ic)
 
-                            currentTryPsw = 0
-                            self.entryUsr_Con.delete(0, 'end')
+                            current_try_psw = 0
+                            self.entry_usr_con.delete(0, 'end')
                         else:
-                            self.label_IC.configure(text = label_info_msg["wrongPassword"] + f"\nIl vous reste {maxTryPsw - currentTryPsw} tentative(s)", fg = label_WrongAswer_color)
-                            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Con))
-                            self.screenChange(self.frame_IC)
-                        self.entryPsw_Con.delete(0, 'end')
+                            self.label_ic.configure(text = label_info_msg["wrong_password"] + f"\nIl vous reste {max_try_psw - current_try_psw} tentative(s)", fg = label_wrong_answer_color)
+                            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_con))
+                            self.screen_change(self.frame_ic)
+                        self.entry_psw_con.delete(0, 'end')
 
                 else: # L'user n'existe pas
-                    self.label_IC.configure(text = label_info_msg["noUser"], fg = label_WrongAswer_color)
-                    self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Con))
-                    self.screenChange(self.frame_IC)
+                    self.label_ic.configure(text = label_info_msg["no_user"], fg = label_wrong_answer_color)
+                    self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_con))
+                    self.screen_change(self.frame_ic)
             else: # Illegal character
-                self.label_IC.configure(text = label_info_msg["illegalCharacter"], fg = label_WrongAswer_color)
-                self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Con))
-                self.screenChange(self.frame_IC)
+                self.label_ic.configure(text = label_info_msg["illegal_character"], fg = label_wrong_answer_color)
+                self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_con))
+                self.screen_change(self.frame_ic)
         else: # Username or password empty
-            self.label_IC.configure(text = label_info_msg["emptyData"], fg = label_WrongAswer_color)
-            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Con))
-            self.screenChange(self.frame_IC)
+            self.label_ic.configure(text = label_info_msg["empty_data"], fg = label_wrong_answer_color)
+            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_con))
+            self.screen_change(self.frame_ic)
     
-    def createAccount(self):
+    def create_account(self):
         """
         Description : Essaye de connecter l'utilsateur en fonction de s'il est dans la db et s'il a entré des bonne données
         
@@ -590,56 +590,56 @@ class Interface(Tk):
             self
         Output : /
         """
-        username = self.entryUsr_Create.get()
-        password = self.entryPsw_Create.get()
-        confPsw = self.entryConfPsw_Create.get()
+        username = self.entry_usr_create.get()
+        password = self.entry_psw_Create.get()
+        confPsw = self.entry_conf_psw_create.get()
         if username != "" and password != "" and confPsw != "" :
-            if checkNoInjection(username) and checkNoInjection(password) and checkNoInjection(confPsw):
+            if check_no_injection(username) and check_no_injection(password) and check_no_injection(confPsw):
                 if username != password:
-                    if userExist(users, username): # L'user est déjà existant
-                        self.label_IC.configure(text = label_info_msg["userAllreadyExist"], fg = label_WrongAswer_color)
-                        self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
-                        self.screenChange(self.frame_IC)
+                    if user_exist(users, username): # L'user est déjà existant
+                        self.label_ic.configure(text = label_info_msg["user_allready_exist"], fg = label_wrong_answer_color)
+                        self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_create))
+                        self.screen_change(self.frame_ic)
                     else: # L'user n'existe pas
                         if password == confPsw:
-                            if checkNoEasyPsw(password): # Le mot de passe n'est pas trop simple (1234, salut, ...)
-                                if checkNoPoorPsw(password): # Le mot de passe est assez robuste
-                                    updateUser(users, username, password)
+                            if check_no_easy_psw(password): # Le mot de passe n'est pas trop simple (1234, salut, ...)
+                                if check_no_poor_psw(password): # Le mot de passe est assez robuste
+                                    update_user(users, username, password)
 
-                                    self.label_IC.configure(text = label_info_msg["successfullyNewAccount"], fg = label_CorrectAswer_color)
-                                    self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
-                                    self.screenChange(self.frame_IC)
+                                    self.label_ic.configure(text = label_info_msg["successfully_new_account"], fg = label_correct_answer_color)
+                                    self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
+                                    self.screen_change(self.frame_ic)
 
-                                    self.entryUsr_Create.delete(0, 'end')
-                                    self.entryPsw_Create.delete(0, 'end')
-                                    self.entryConfPsw_Create.delete(0, 'end')
+                                    self.entry_usr_create.delete(0, 'end')
+                                    self.entry_psw_Create.delete(0, 'end')
+                                    self.entry_conf_psw_create.delete(0, 'end')
 
                                 else: # Password too poor
-                                    self.label_IC.configure(text = label_info_msg["tooPoorPsw"], fg = label_WrongAswer_color)
-                                    self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
-                                    self.screenChange(self.frame_IC)
+                                    self.label_ic.configure(text = label_info_msg["too_poor_psw"], fg = label_wrong_answer_color)
+                                    self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_create))
+                                    self.screen_change(self.frame_ic)
                             else: # Password too easy
-                                self.label_IC.configure(text = label_info_msg["tooEasyPsw"], fg = label_WrongAswer_color)
-                                self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
-                                self.screenChange(self.frame_IC)
+                                self.label_ic.configure(text = label_info_msg["too_easy_psw"], fg = label_wrong_answer_color)
+                                self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_create))
+                                self.screen_change(self.frame_ic)
                         else: # New psw and confirmation of new psw not the same
-                            self.label_IC.configure(text = label_info_msg["notSameNewPsw"], fg = label_WrongAswer_color)
-                            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
-                            self.screenChange(self.frame_IC)
+                            self.label_ic.configure(text = label_info_msg["not_same_new_psw"], fg = label_wrong_answer_color)
+                            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_create))
+                            self.screen_change(self.frame_ic)
                 else: # Username et password identique
-                    self.label_IC.configure(text = label_info_msg["sameUserPsw"], fg = label_WrongAswer_color)
-                    self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
-                    self.screenChange(self.frame_IC)
+                    self.label_ic.configure(text = label_info_msg["same_user_psw"], fg = label_wrong_answer_color)
+                    self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_create))
+                    self.screen_change(self.frame_ic)
             else: # Illegal character
-                self.label_IC.configure(text = label_info_msg["illegalCharacter"], fg = label_WrongAswer_color)
-                self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
-                self.screenChange(self.frame_IC)
+                self.label_ic.configure(text = label_info_msg["illegal_character"], fg = label_wrong_answer_color)
+                self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_create))
+                self.screen_change(self.frame_ic)
         else: # Username or password empty
-            self.label_IC.configure(text = label_info_msg["emptyData"], fg = label_WrongAswer_color)
-            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_Create))
-            self.screenChange(self.frame_IC)
+            self.label_ic.configure(text = label_info_msg["empty_data"], fg = label_wrong_answer_color)
+            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_create))
+            self.screen_change(self.frame_ic)
     
-    def modifyAccountPsw(self):
+    def modify_account_psw(self):
         """
         Description : Change le mot de passe en fonction de s'il est dans la db et s'il a entré des bonne données
         
@@ -647,84 +647,84 @@ class Interface(Tk):
             self
         Output : /
         """
-        username = self.entryUsr_PSWMod.get()
-        password = self.entryPsw_PSWMod.get()
+        username = self.entry_usr_pswmod.get()
+        password = self.entry_psw_pswmod.get()
         if username != "" and password != "":
-            if checkNoInjection(username) and checkNoInjection(password):
-                if userExist(users, username):
-                    if pswCorrect(users, username, password): # LOGIN, now check new password
-                        newPsw = self.entryNewPsw_PSWMod.get()
-                        confNewPsw = self.entryConfNewPsw_PSWMod.get()
+            if check_no_injection(username) and check_no_injection(password):
+                if user_exist(users, username):
+                    if psw_correct(users, username, password): # LOGIN, now check new password
+                        newPsw = self.entry_new_psw_pswmod.get()
+                        confNewPsw = self.entry_conf_new_psw_PSWMod.get()
 
                         if newPsw != "" and confNewPsw != "":
-                            if checkNoInjection(newPsw) and checkNoInjection(confNewPsw):
+                            if check_no_injection(newPsw) and check_no_injection(confNewPsw):
                                 if newPsw == confNewPsw:
                                     if username != newPsw:
-                                        if checkNoEasyPsw(newPsw): # Le mot de passe n'est pas trop simple
-                                            if checkNoPoorPsw(newPsw): # Le mot de passe est assez robuste
-                                                updateUser(users, username, newPsw)
+                                        if check_no_easy_psw(newPsw): # Le mot de passe n'est pas trop simple
+                                            if check_no_poor_psw(newPsw): # Le mot de passe est assez robuste
+                                                update_user(users, username, newPsw)
 
-                                                self.label_IC.configure(text = label_info_msg["pswSuccessfullyUpdated"], fg = label_CorrectAswer_color)
-                                                self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_MH))
-                                                self.screenChange(self.frame_IC)
+                                                self.label_ic.configure(text = label_info_msg["psw_successfully_updated"], fg = label_correct_answer_color)
+                                                self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
+                                                self.screen_change(self.frame_ic)
 
-                                                self.entryUsr_PSWMod.delete(0, 'end')
-                                                self.entryPsw_PSWMod.delete(0, 'end')
-                                                self.entryConfNewPsw_PSWMod.delete(0, 'end')
+                                                self.entry_usr_pswmod.delete(0, 'end')
+                                                self.entry_psw_pswmod.delete(0, 'end')
+                                                self.entry_conf_new_psw_PSWMod.delete(0, 'end')
 
                                             else: # Password too poor
-                                                self.label_IC.configure(text = label_info_msg["tooPoorPsw"], fg = label_WrongAswer_color)
-                                                self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                                                self.screenChange(self.frame_IC)
+                                                self.label_ic.configure(text = label_info_msg["too_poor_psw"], fg = label_wrong_answer_color)
+                                                self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                                                self.screen_change(self.frame_ic)
                                         else: # Password too easy
-                                            self.label_IC.configure(text = label_info_msg["tooEasyPsw"], fg = label_WrongAswer_color)
-                                            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                                            self.screenChange(self.frame_IC)
+                                            self.label_ic.configure(text = label_info_msg["too_easy_psw"], fg = label_wrong_answer_color)
+                                            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                                            self.screen_change(self.frame_ic)
                                     else: # Username et password identique
-                                        self.label_IC.configure(text = label_info_msg["sameUserPsw"], fg = label_WrongAswer_color)
-                                        self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                                        self.screenChange(self.frame_IC)
+                                        self.label_ic.configure(text = label_info_msg["same_user_psw"], fg = label_wrong_answer_color)
+                                        self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                                        self.screen_change(self.frame_ic)
                                 else: # New psw and confirmation of new psw not the same
-                                    self.label_IC.configure(text = label_info_msg["notSameNewPsw"], fg = label_WrongAswer_color)
-                                    self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                                    self.screenChange(self.frame_IC)
+                                    self.label_ic.configure(text = label_info_msg["not_same_new_psw"], fg = label_wrong_answer_color)
+                                    self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                                    self.screen_change(self.frame_ic)
                             else: # Illegal character
-                                self.label_IC.configure(text = label_info_msg["illegalCharacter"], fg = label_WrongAswer_color)
-                                self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                                self.screenChange(self.frame_IC)
+                                self.label_ic.configure(text = label_info_msg["illegal_character"], fg = label_wrong_answer_color)
+                                self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                                self.screen_change(self.frame_ic)
                         else: # Username or password empty
-                            self.label_IC.configure(text = label_info_msg["emptyData"], fg = label_WrongAswer_color)
-                            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                            self.screenChange(self.frame_IC)
+                            self.label_ic.configure(text = label_info_msg["empty_data"], fg = label_wrong_answer_color)
+                            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                            self.screen_change(self.frame_ic)
 
                     else: # Le mmot de passe est incorrect
-                        global currentTryPsw
-                        currentTryPsw += 1
-                        if currentTryPsw >= maxTryPsw:
-                            self.label_IC.configure(text = label_info_msg["toManyTry"], fg = label_WrongAswer_color)
-                            self.button_IC.configure(text= "Retour à l'accueil", command= lambda: self.screenChange(self.frame_PSWMod))
-                            self.screenChange(self.frame_IC)
+                        global current_try_psw
+                        current_try_psw += 1
+                        if current_try_psw >= max_try_psw:
+                            self.label_ic.configure(text = label_info_msg["to_many_try"], fg = label_wrong_answer_color)
+                            self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_pswmod))
+                            self.screen_change(self.frame_ic)
 
-                            currentTryPsw = 0
-                            self.entryUsr_PSWMod.delete(0, 'end')
+                            current_try_psw = 0
+                            self.entry_usr_pswmod.delete(0, 'end')
                         else:
-                            self.label_IC.configure(text = label_info_msg["wrongPassword"] + f"\nIl vous reste {maxTryPsw - currentTryPsw} tentative(s)", fg = label_WrongAswer_color)
-                            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                            self.screenChange(self.frame_IC)
-                        self.entryPsw_PSWMod.delete(0, 'end')
+                            self.label_ic.configure(text = label_info_msg["wrong_password"] + f"\nIl vous reste {max_try_psw - current_try_psw} tentative(s)", fg = label_wrong_answer_color)
+                            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                            self.screen_change(self.frame_ic)
+                        self.entry_psw_pswmod.delete(0, 'end')
 
                 else: # L'user n'existe pas
-                    self.label_IC.configure(text = label_info_msg["noUser"], fg = label_WrongAswer_color)
-                    self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                    self.screenChange(self.frame_IC)
+                    self.label_ic.configure(text = label_info_msg["no_user"], fg = label_wrong_answer_color)
+                    self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                    self.screen_change(self.frame_ic)
             else: # Illegal character
-                self.label_IC.configure(text = label_info_msg["illegalCharacter"], fg = label_WrongAswer_color)
-                self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-                self.screenChange(self.frame_IC)
+                self.label_ic.configure(text = label_info_msg["illegal_character"], fg = label_wrong_answer_color)
+                self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+                self.screen_change(self.frame_ic)
         else: # Username or password empty
-            self.label_IC.configure(text = label_info_msg["emptyData"], fg = label_WrongAswer_color)
-            self.button_IC.configure(text= "Retour", command= lambda: self.screenChange(self.frame_PSWMod))
-            self.screenChange(self.frame_IC)
+            self.label_ic.configure(text = label_info_msg["empty_data"], fg = label_wrong_answer_color)
+            self.button_ic.configure(text= "Retour", command= lambda: self.screen_change(self.frame_pswmod))
+            self.screen_change(self.frame_ic)
 
 
 if __name__ == "__main__" :
@@ -733,10 +733,10 @@ if __name__ == "__main__" :
     root.title("Gestion de compte")
 
     try:
-        users = loadJson()
+        users = load_json()
     except:
         logs("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier.")
-        createJson(users)
+        create_json(users)
         
 
     root.mainloop()
