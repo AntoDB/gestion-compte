@@ -510,13 +510,13 @@ class Interface(Tk):
         self.entry_psw_con.delete(0, 'end')
         self.screen_change(self.frame_con)
 
-    def connection(self, frame : str):
+    def connection(self, operation : str):
         """
         Description : Essaye de connecter l'utilsateur en fonction de s'il est dans la db et s'il a entré des bonne données
         
         Input :
             self
-            frame : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
+            operation : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
         Output : /
         """ 
         users = load_json() # Must update the variable in the code if account where created ou deleted
