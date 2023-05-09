@@ -451,26 +451,23 @@ class Interface(Tk):
         self.frame_DA = Frame(self, bg=bg_frame_color)
         self.canvas_DA = Canvas(self.frame_DA, bg=bg_frame_color, width=frame_width, height=frame_width/ratio, highlightthickness = 0)
     
-        Label(self.frame_DA, bg=bg_frame_color, fg=label_color, text="Comptes enregistrés", font = ("Helvetica", 25)).grid(row = 1, column = 1, columnspan= 2)
-
-        Label(self.frame_DA, bg=bg_frame_color, fg=label_error_color, text="⚠ Nous considérons que tous les comptes sont des administrateurs.\nEn réalité, il faudrait chiffrer tous les mots de passe.\n\nEn effet afficher les mots de passe en clair pour tout les utilsateurs\nrelève d'une énorme faille de sécuritée.", font = ("Helvetica", 15)).grid(row = 2, column = 1, columnspan= 2)
+        Label(self.frame_DA, bg=bg_frame_color, fg=label_color, text="Comptes enregistrés", font = ("Helvetica", 25)).grid(row = 1, column = 1)
     
-        Label(self.frame_DA, bg=bg_frame_color, fg=label_color, text="Noms/Pseudos", font = ("Helvetica", 25)).grid(row = 3, column = 1)
-        Label(self.frame_DA, bg=bg_frame_color, fg=label_color, text="Mots de passe", font = ("Helvetica", 25)).grid(row = 3, column = 2)
+        Label(self.frame_DA, bg=bg_frame_color, fg=label_color, text="Noms/Pseudos", font = ("Helvetica", 25)).grid(row = 2, column = 1, sticky=W)
         
         self.text_DA = Text(self.frame_DA, font = ("Helvetica", 15), height=10)
-        self.text_DA.grid(row = 4, column = 1, columnspan=2, sticky=EW)
+        self.text_DA.grid(row = 3, column = 1, sticky=EW)
 
         # create a scrollbar widget and set its command to the text widget
         scrollbar = Scrollbar(self.frame_DA, orient='vertical', command=self.text_DA.yview)
-        scrollbar.grid(row=4, column=3, sticky=NS)
+        scrollbar.grid(row=3, column=2, sticky=NS)
 
         #  communicate back to the scrollbar
         self.text_DA['yscrollcommand'] = scrollbar.set
         
         Button(self.frame_DA, bg=bg_button_color, fg=label_button_color, text="Retour à l'accueil", width = 15, height = 2, font =("Helvetica", 15), command=lambda: self.screenChange(self.frame_MH)).grid(row = 5, column = 1, columnspan= 2)
 
-        self.canvas_DA.grid(row = 1, column = 1, rowspan=5, columnspan= 2)
+        self.canvas_DA.grid(row = 1, column = 1, rowspan=5)
 
         logs("[INFO] Écran d'affichage de comptes fait")
 
@@ -540,9 +537,8 @@ class Interface(Tk):
                             self.text_DA.configure(state=NORMAL)
                             self.text_DA.delete('1.0', END)
                             for index, (key, values) in enumerate(users.items()):
-                                self.text_DA.insert(f'{index+1}.0', f'{key}\t\t')
-                                self.text_DA.insert(f'{index+1}.100', f'{values}\n')
-                                print(f"index : {index+1}, key : {key}, values : {values}")
+                                self.text_DA.insert(f'{index+1}.0', f'{key}\n')
+                                print(f"index : {index+1}, key : {key}")
                             self.text_DA.configure(state=DISABLED)
 
                             self.screenChange(self.frame_DA)
