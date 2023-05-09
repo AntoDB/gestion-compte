@@ -546,6 +546,7 @@ class Interface(Tk):
                             self.label_ic.configure(text = label_info_msg["account_successfully_delete"], fg = label_correct_answer_color)
                             self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
                             remove_user(users, username)
+                            users = load_json()
 
                             self.screen_change(self.frame_ic)
                         else :
@@ -590,6 +591,8 @@ class Interface(Tk):
             self
         Output : /
         """
+        users = load_json()
+
         username = self.entry_usr_create.get()
         password = self.entry_psw_Create.get()
         confPsw = self.entry_conf_psw_create.get()
