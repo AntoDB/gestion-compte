@@ -338,8 +338,8 @@ class Interface(Tk):
         # Affichage premier écran & Prend quel écran c'est & Met le titre
             
         self.mes_autres_frames = {}
-        self.mes_autres_frames["whichMenu"] = self.frame_mh
-        self.mes_autres_frames["whichMenu"].grid()
+        self.current_frame = self.frame_mh
+        self.current_frame.grid()
 
         # =============== Création des autres fenêtres =============== #
 
@@ -509,10 +509,10 @@ class Interface(Tk):
         Output : /
         """
         #print(dir(arg)) # Possibilité d'opération sur l'object
-        logs("[INFO] Changement fenêtre : " + str(self.mes_autres_frames["whichMenu"]) + " > " + str(arg))
-        self.mes_autres_frames["whichMenu"].grid_remove()
-        self.mes_autres_frames["whichMenu"] = arg
-        self.mes_autres_frames["whichMenu"].grid()
+        logs("[INFO] Changement fenêtre : " + str(self.current_frame) + " > " + str(arg))
+        self.current_frame.grid_remove()
+        self.current_frame = arg
+        self.current_frame.grid()
     
     def modify_screen_after_login(self, operation : str):
         """
