@@ -3,7 +3,7 @@
 Account management
 
 Created on Thuesday April 27 2023 at 15:51
-"Finished" on Thuesday April 28 2023 at 23:59
+"Finished" on Thuesday May 10 2023 at 21:59
 
 Authors : 
 Antonin De Breuck (BC info)
