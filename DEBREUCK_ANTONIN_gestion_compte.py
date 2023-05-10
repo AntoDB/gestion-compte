@@ -85,10 +85,10 @@ cwd = str(os.getcwd())
 
 files_folder = "/Documents/"
 
-log_folder = "/Documents/log/"
+logs_folder = "/Documents/logs/"
 saves_folder = "/Documents/"
 
-log_file = "log"
+logs_file = "logs"
 data_file = "users"
 
 #================================================== Don't touch ==================================================#
@@ -122,13 +122,13 @@ def log(info):
     if date == "":
         date = f"{datenow.day}-{datenow.month}-{datenow.year}_{datenow.hour}-{datenow.minute}-{datenow.second}"
 
-    if not os.path.exists(cwd + log_folder + log_file + " " + date + ".txt"):
+    if not os.path.exists(cwd + logs_folder + logs_file + " " + date + ".txt"):
         if not os.path.exists(cwd + files_folder):
             os.mkdir(cwd + files_folder)
-        if not os.path.exists(cwd + log_folder):
-            os.mkdir(cwd + log_folder)
+        if not os.path.exists(cwd + logs_folder):
+            os.mkdir(cwd + logs_folder)
             
-    with open(cwd + log_folder + log_file + "_" + date + ".txt", 'a') as f:
+    with open(cwd + logs_folder + logs_file + "_" + date + ".txt", 'a') as f:
         f.write('[' + str(datenow) + '] ' + info + '\n')
 
     if "[ERROR]" in info:
