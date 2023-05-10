@@ -25,7 +25,6 @@ import platform
 import json
 import re # For Regex
 from colorama import Fore # For Colors in terminal
-import time # For refresh doc if delete during process running
 
 #=========================================================================================================#
 
@@ -86,10 +85,10 @@ cwd = str(os.getcwd())
 
 files_folder = "/Documents/"
 
-logs_folder = "/Documents/logs/"
+log_folder = "/Documents/log/"
 saves_folder = "/Documents/"
 
-logs_file = "logs"
+log_file = "log"
 data_file = "users"
 
 #================================================== Don't touch ==================================================#
@@ -106,35 +105,35 @@ current_try_psw = 0
 
 #================================================== Operations ==================================================#
 
-def logs(info):
+def log(info):
     """
-    Description : S'assure la création des logs pour toutes les informations.
-    Les logs contiendront toutes les informations qui pourraient aider à débloquer le jeu
+    Description : S'assure la création des log pour toutes les informations.
+    Les log contiendront toutes les informations qui pourraient aider à débloquer le jeu
     
     Input :
-        info : string -> Message à mettre dans les logs
+        info : string -> Message à mettre dans les log
     Output : /
     """
     global date
     info = str(info)
     datenow = datetime.datetime.now()
 
-    # To avoid 1 file per logs
+    # To avoid 1 file per log
     if date == "":
         date = f"{datenow.day}-{datenow.month}-{datenow.year}_{datenow.hour}-{datenow.minute}-{datenow.second}"
 
-    if not os.path.exists(cwd + logs_folder + logs_file + " " + date + ".txt"):
+    if not os.path.exists(cwd + log_folder + log_file + " " + date + ".txt"):
         if not os.path.exists(cwd + files_folder):
             os.mkdir(cwd + files_folder)
-        if not os.path.exists(cwd + logs_folder):
-            os.mkdir(cwd + logs_folder)
+        if not os.path.exists(cwd + log_folder):
+            os.mkdir(cwd + log_folder)
             
-    with open(cwd + logs_folder + logs_file + "_" + date + ".txt", 'a') as f:
+    with open(cwd + log_folder + log_file + "_" + date + ".txt", 'a') as f:
         f.write('[' + str(datenow) + '] ' + info + '\n')
 
-    if "ERROR" in info:
+    if "[ERROR]" in info:
         color = Fore.RED
-    elif "WARN" in info:
+    elif "[WARN]" in info:
         color = Fore.YELLOW
     else:
         color = Fore.RESET
@@ -152,10 +151,10 @@ def load_json():
     try:
         with open(cwd + files_folder + data_file + ".json") as jf: # jf = Json file
             users_in_file = json.load(jf)
-        logs("[INFO] Recharge les utilisateur du fichier JSON")
+        log("[INFO] Recharge les utilisateur du fichier JSON")
         return users_in_file
     except:
-        logs("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier.")
+        log("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier. (Avec les utilisateurs qu'il y avait au lancement)")
         global users
         create_json(users)
         users = load_json()
@@ -171,9 +170,9 @@ def create_json(users : dict):
     try:
         with open(cwd + files_folder + data_file + ".json", "w") as fp:
             json.dump(users, fp)
-        logs("[INFO] Crée ou écrit un fichier JSON avec les utilisateurs")
+        log("[INFO] Crée ou écrit un fichier JSON avec les utilisateurs")
     except:
-        logs("[ERROR] Impossible de créer le fichier")
+        log("[ERROR] Impossible de créer le fichier")
 
 # ===== Users treatment ===== #
 def user_exist(logins: dict, username: str):
@@ -192,11 +191,12 @@ def user_exist(logins: dict, username: str):
         else :
             return False
     except AttributeError:
-        logs("[ERROR] Fichier vide or censé être créé avec utilisateurs !")
+        log("[WARN] Fichier vide or censé être créé avec utilisateurs !")
         global users
         create_json(users)
     except Exception as Err:
-        logs("[ERROR] Impossible de récupérer les données des utilisateurs\nL'erreur :\n" + str(Err))
+        log("[ERROR] Impossible de récupérer les données des utilisateurs\nL'erreur :\n")
+        log(Err)
     
 def psw_correct(logins: dict, username: str, password: str):
     """
@@ -228,7 +228,7 @@ def update_user(logins: dict, username: str, password: str):
     """
     logins[username] = password
     create_json(logins)
-    logs("[INFO] Utilisateur bien mis à jour !")
+    log("[INFO] Utilisateur bien mis à jour !")
     return logins
 
 def remove_user(logins: dict, username: str):
@@ -244,7 +244,7 @@ def remove_user(logins: dict, username: str):
     if username in logins.keys() : # Sécurité
         logins.pop(username, None)
         create_json(logins)
-        logs("[INFO] Utilisateur supprimé !")
+        log("[INFO] Utilisateur supprimé !")
     return logins
 
 # ===== Input & Psw treatment ===== #
@@ -258,7 +258,7 @@ def check_no_injection(input: str):
         bool -> True si pas de caractères spéciaux sensible, False dans le cas contraire
     """
     if "#" in input or "\"" in input :
-        logs("[WARN] Soupçon de tentative d'injection de code.")
+        log("[WARN] Soupçon de tentative d'injection de code.")
         return False
     return True
 
@@ -317,7 +317,7 @@ class Interface(Tk):
         self.button_mh2 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Créer un compte", width = 25, height = 3, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_create))  
         self.button_mh3 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Changer votre mot de passe", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.screen_change(self.frame_pswmod))
         self.button_mh4 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Supprimer votre compte", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.modify_screen_after_login("delPsw"))
-        self.button_mh5 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Afficher les utilisateurs", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.modify_screen_after_login("display_users"))
+        self.button_mh5 = Button(self.frame_mh, bg=bg_button_color, fg=label_button_color, text="Afficher les utilisateurs", width = 25, height = 2, font =("Helvetica", 15), command=lambda: self.display_account())
 
         Label(self.frame_mh, bg=bg_frame_color, fg=label_color, text="Python V : " + str(platform.python_version())).place(x = 10 , y = frame_width/ratio-65)
         Label(self.frame_mh, bg=bg_frame_color, fg=label_color, text="App V : " + version).place(x = 10 , y = frame_width/ratio-45)
@@ -333,7 +333,7 @@ class Interface(Tk):
         self.button_mh4.grid(row = 4, column = 3)
         self.button_mh5.grid(row = 4, column = 4)
 
-        logs("[INFO] Menu de démarrage fait")
+        log("[INFO] Menu de démarrage fait")
 
         # Affichage premier écran & Prend quel écran c'est & Met le titre
             
@@ -372,7 +372,7 @@ class Interface(Tk):
         self.button_con1.grid(row = 4, column = 1)
         self.button_con2.grid(row = 5, column = 1)
 
-        logs("[INFO] Menu de connexion fait")
+        log("[INFO] Menu de connexion fait")
 
         """
         Description : Création de l'écran de création de compte
@@ -406,7 +406,7 @@ class Interface(Tk):
         self.button_create1.grid(row = 5, column = 1)
         self.button_create2.grid(row = 6, column = 1)
 
-        logs("[INFO] Menu de création de compte fait")
+        log("[INFO] Menu de création de compte fait")
 
         """
         Description : Création de l'écran d'information de connexion/modification/suppression
@@ -424,7 +424,7 @@ class Interface(Tk):
         self.label_ic.grid(row = 1, column = 1)
         self.button_ic.grid(row = 2, column = 1)
 
-        logs("[INFO] Écran d'affichage message de connexion/modification/suppression.")
+        log("[INFO] Écran d'affichage message de connexion/modification/suppression.")
 
         """
         Description : Création de l'écran de modification de mot de passe
@@ -463,7 +463,7 @@ class Interface(Tk):
         self.button_pswmod1.grid(row = 7, column = 1)
         self.button_pswmod2.grid(row = 8, column = 1)
 
-        logs("[INFO] Menu de modification de mot de passe fait")
+        log("[INFO] Menu de modification de mot de passe fait")
 
         """
         Description : Création du menu de statistique.
@@ -494,9 +494,40 @@ class Interface(Tk):
 
         self.canvas_da.grid(row = 1, column = 1, rowspan=5)
 
-        logs("[INFO] Écran d'affichage de comptes fait")
+        log("[INFO] Écran d'affichage de comptes fait")
 
     # ===== Interface treatment ===== #
+
+    def display_account(self):
+        """
+        Description : Pour pouvoir afficher les comptes utilisateurs
+        Actions : Change la textbox avec les datas et demande le changement d'écran
+        
+        Input :
+            self
+        Output : /
+        """
+        global users
+        users = load_json() # Must update the variable in the code if account where created ou deleted
+
+        #print(users)
+        #print(users.items())
+        #(list(enumerate(users.items())))
+        self.text_da.configure(state=NORMAL)
+        self.text_da.delete('1.0', END)
+        try:
+            for index, (key, values) in enumerate(users.items()):
+                self.text_da.insert(f'{index+1}.0', f'{key}\n')
+                print(f"index : {index+1}, key : {key}")
+        except AttributeError:
+            log("[WARN] Not found users. Retry for recreate file.")
+            self.display_account()
+        except Exception as Err:
+            log("[ERROR] Please call the dev !\nThe error :\n")
+            log(Err)
+        self.text_da.configure(state=DISABLED)
+
+        self.screen_change(self.frame_da)
 
     def screen_change(self, arg : object):
         """
@@ -509,7 +540,7 @@ class Interface(Tk):
         Output : /
         """
         #print(dir(arg)) # Possibilité d'opération sur l'object
-        logs("[INFO] Changement fenêtre : " + str(self.current_frame) + " > " + str(arg))
+        log("[INFO] Changement fenêtre : " + str(self.current_frame) + " > " + str(arg))
         self.current_frame.grid_remove()
         self.current_frame = arg
         self.current_frame.grid()
@@ -556,17 +587,7 @@ class Interface(Tk):
                             self.label_ic.configure(text = label_info_msg["psw_successfully_updated"] + f"\nBonjour {username} !", fg = label_correct_answer_color)
                             self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
                             
-                            #print(users)
-                            #print(users.items())
-                            #(list(enumerate(users.items())))
-                            self.text_da.configure(state=NORMAL)
-                            self.text_da.delete('1.0', END)
-                            for index, (key, values) in enumerate(users.items()):
-                                self.text_da.insert(f'{index+1}.0', f'{key}\n')
-                                print(f"index : {index+1}, key : {key}")
-                            self.text_da.configure(state=DISABLED)
-
-                            self.screen_change(self.frame_da)
+                            self.display_account()
                         elif operation == "delPsw" :
                             self.label_ic.configure(text = label_info_msg["account_successfully_delete"], fg = label_correct_answer_color)
                             self.button_ic.configure(text= "Retour à l'accueil", command= lambda: self.screen_change(self.frame_mh))
@@ -763,7 +784,7 @@ if __name__ == "__main__" :
     try:
         users = load_json()
     except:
-        logs("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier.")
+        log("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier.")
         create_json(users)
         
 
