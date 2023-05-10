@@ -37,7 +37,7 @@ from colorama import Fore # For Colors in terminal
 frame_width = 1000
 ratio = 16/9
 
-version = '1.0.0'
+version = '1.1.12'
 
 # =============== Colors =============== #
 bg_frame_color = 'black'
@@ -153,11 +153,14 @@ def load_json():
             users_in_file = json.load(jf)
         log("[INFO] Recharge les utilisateur du fichier JSON")
         return users_in_file
-    except:
+    except FileNotFoundError :
         log("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier. (Avec les utilisateurs qu'il y avait au lancement)")
         global users
         create_json(users)
         users = load_json()
+    except Exception as Err :
+        log("[ERROR] Prévenez un admin (contact@antodb.be) !\nL'erreur :\n")
+        log(Err)
 
 def create_json(users : dict):
     """
@@ -520,7 +523,7 @@ class Interface(Tk):
                 self.text_da.insert(f'{index+1}.0', f'{key}\n')
                 print(f"index : {index+1}, key : {key}")
         except AttributeError:
-            log("[WARN] Not found users. Retry for recreate file.")
+            log("[WARN] Not found users. Retry after (probably) recreated file.")
             self.display_account()
         except Exception as Err:
             log("[ERROR] Please call the dev !\nThe error :\n")
