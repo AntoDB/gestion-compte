@@ -25,6 +25,7 @@ import platform
 import json
 import re # For Regex
 from colorama import Fore # For Colors in terminal
+import time # For refresh doc if delete during process running
 
 #=========================================================================================================#
 
@@ -149,13 +150,20 @@ def load_json():
         users_in_file : dict -> Dictionnaire du fichier JSON
     """
     try:
+        print("2.1")
         with open(cwd + files_folder + data_file + ".json") as jf: # jf = Json file
             users_in_file = json.load(jf)
+        logs("[INFO] Recharge les utilisateur du fichier JSON")
         return users_in_file
     except:
+        print("2.2")
         logs("[WARN] Fichier d'utilisateur pas fait. Lancement du processus de création de fichier.")
-        users = {}
+        global users
+        print(f"2.3 { users }")
         create_json(users)
+        print("4")
+        users = load_json()
+        print(f"5 { users }")
 
 def create_json(users : dict):
     """
@@ -166,10 +174,12 @@ def create_json(users : dict):
     Output : /
     """
     try:
+        print("3.1")
         with open(cwd + files_folder + data_file + ".json", "w") as fp:
             json.dump(users, fp)
         logs("[INFO] Crée ou écrit un fichier JSON avec les utilisateurs")
     except:
+        print("3.2")
         logs("[ERROR] Impossible de créer le fichier")
 
 # ===== Users treatment ===== #
@@ -540,9 +550,12 @@ class Interface(Tk):
             self
             operation : str -> Quel opération à faire et quelle frame a afficher si la connexion est réussie
         Output : /
-        """ 
+        """
+        print("1")
         users = load_json() # Must update the variable in the code if account where created ou deleted
-
+        print(f"6 END { users }")
+        users = load_json() # Must update the variable in the code if account where created ou deleted
+        print(f"7 END { users }")
         username = self.entry_usr_con.get()
         password = self.entry_psw_con.get()
         if username != "" and password != "":
