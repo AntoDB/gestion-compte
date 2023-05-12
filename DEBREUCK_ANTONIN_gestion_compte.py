@@ -3,7 +3,7 @@
 Account management
 
 Created on Thuesday April 27 2023 at 15:51
-"Finished" on Thuesday May 10 2023 at 21:59
+"Finished" on Friday May 12 2023 at 12:20
 
 Authors : 
 Antonin De Breuck (BC info)
@@ -21,7 +21,7 @@ Repository : https://github.com/AntoDB/gestion-compte
 from tkinter import *
 import datetime
 import os
-import platform
+import platform # For the python version
 import json
 import re # For Regex
 from colorama import Fore # For Colors in terminal
@@ -37,7 +37,7 @@ from colorama import Fore # For Colors in terminal
 frame_width = 1000
 ratio = 16/9
 
-version = '1.1.12'
+version = '1.1.13'
 
 # =============== Colors =============== #
 bg_frame_color = 'black'
@@ -122,7 +122,7 @@ def log(info):
     if date == "":
         date = f"{datenow.day}-{datenow.month}-{datenow.year}_{datenow.hour}-{datenow.minute}-{datenow.second}"
 
-    if not os.path.exists(cwd + logs_folder + logs_file + " " + date + ".txt"):
+    if not os.path.exists(cwd + logs_folder + logs_file + "_" + date + ".txt"):
         if not os.path.exists(cwd + files_folder):
             os.mkdir(cwd + files_folder)
         if not os.path.exists(cwd + logs_folder):
